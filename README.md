@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/banner.png" alt="claude-cockpit banner" width="100%">
+</p>
+
 # claude-cockpit
 
 A tmux cockpit for Claude Code in Ghostty: live usage, token burn, system stats and project git status around your session. One keybind to launch.
@@ -15,3 +19,6 @@ Needs `tmux`, `btop`, `python3`. Ghostty keybind (see `ghostty-config.ghostty`):
 Usage: `cockpit [dir]` to start or re-attach, `cockpit --kill [dir]` to close.
 
 Note: the left panel shows your account email on your own screen only; nothing is sent anywhere.
+
+---
+Banner generated with [p5.js](https://p5js.org) (`assets/banner.js`, open `assets/banner.html` to view).
