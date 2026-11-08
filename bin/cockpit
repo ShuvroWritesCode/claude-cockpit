@@ -1,0 +1,31 @@
+#!/bin/zsh
+# Claude Cockpit — tmux layout: [account/usage/system | claude | project/shell]
+# usage: cockpit [dir]          start (or re-attach to) a cockpit for dir (default: $PWD)
+#        cockpit --kill [dir]   close that cockpit
+CK=~/.config/claude-cockpit
+if [[ $1 == --kill ]]; then shift; KILL=1; fi
+if [[ -n $1 ]]; then DIR=${1:A}; else DIR=$PWD; fi
+S="cockpit-${${DIR:t}//[^A-Za-z0-9_-]/_}"
+
+if [[ -n $KILL ]]; then
+  tmux kill-session -t "=$S" 2>/dev/null && echo "closed $S"
+  exit
+fi
+
+if ! tmux has-session -t "=$S" 2>/dev/null; then
+  tmux new-session -d -s "$S" -n claude -c "$DIR" -x "$(tput cols)" -y "$(tput lines)"
+  C=$(tmux display -p -t "=$S" '#{pane_id}')
+  L=$(tmux split-window -hb -l 32% -t "$C" -c "$DIR" -P -F '#{pane_id}' "python3 $CK/panel.py '$DIR'")
+  R=$(tmux split-window -h  -l 30% -t "$C" -c "$DIR" -P -F '#{pane_id}' "python3 $CK/project.py '$DIR'")
+  LB=$(tmux split-window -v -l 38% -t "$L" -c "$DIR" -P -F '#{pane_id}' "btop -c $CK/btop.conf")
+  RB=$(tmux split-window -v -l 40% -t "$R" -c "$DIR" -P -F '#{pane_id}')
+  tmux select-pane -t "$L"  -T "󰚩 claude · usage · system"
+  tmux select-pane -t "$LB" -T " processes"
+  tmux select-pane -t "$C"  -T "󱚣 claude code"
+  tmux select-pane -t "$R"  -T " project"
+  tmux select-pane -t "$RB" -T " shell"
+  tmux send-keys -t "$C" 'claude' Enter
+  tmux select-pane -t "$C"
+fi
+
+if [[ -n $TMUX ]]; then tmux switch-client -t "=$S"; else exec tmux attach -t "=$S"; fi

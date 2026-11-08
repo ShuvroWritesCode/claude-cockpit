@@ -1,0 +1,35 @@
+# ── Fonts ──────────────────────────────────────────────
+# Maple Mono NF: ligatures + cursive italics + Nerd Font icons
+font-family = "Maple Mono NF"
+font-family = "JetBrainsMono Nerd Font"
+font-size = 13
+font-feature = calt
+font-feature = liga
+font-feature = cv01
+adjust-cell-height = 8%
+font-thicken = true
+
+# ── Look ───────────────────────────────────────────────
+theme = Catppuccin Mocha
+background-opacity = 0.94
+background-blur-radius = 20
+cursor-style = bar
+cursor-style-blink = true
+window-padding-x = 10
+window-padding-y = 8
+window-padding-balance = true
+window-decoration = true
+macos-titlebar-style = hidden
+unfocused-split-opacity = 0.85
+# custom-shader = ~/.config/ghostty/shaders/space.glsl   (file is missing — re-enable if you restore it)
+
+# ── Behaviour ──────────────────────────────────────────
+command = /bin/zsh -l
+mouse-hide-while-typing = true
+macos-option-as-alt = true
+copy-on-select = clipboard
+window-save-state = always
+shell-integration-features = cursor,sudo,title
+
+# cmd+opt+c → launch the Claude cockpit in the current directory
+keybind = cmd+alt+c=text:cockpit\r
